@@ -1,0 +1,34 @@
+steps:
+  - label: "Weight Loading Multiple GPU Test - Large Models"
+    agents:
+        queue: moc-v100
+    soft_fail: false
+    retry:
+      automatic:
+        - exit_status: -1  # Agent was lost
+          limit: 1
+        - exit_status: -10  # Agent was lost
+          limit: 1
+    commands:
+      - cd /vllm-workspace/tests
+      - bash weight_loading/run_model_weight_loading_test.sh -c weight_loading/models-large.txt 
+    plugins:
+      - kubernetes:
+          podSpec:
+            priorityClassName: ci
+            containers:
+            - image: public.ecr.aws/q9t5s3a7/vllm-ci-postmerge-repo:c92acb9693c0504d7dabed2a0251b9f5d4ddaebb
+              resources:
+                requests:
+                  nvidia.com/gpu: 4
+                limits:
+                  nvidia.com/gpu: 4
+              volumeMounts:
+              - name: shm-volume
+                mountPath: /dev/shm
+            volumes:
+            - name: shm-volume
+              persistentVolumeClaim:
+                claimName: shm-pvc
+            nodeSelector:
+              kubernetes.io/hostname: "wrk-4"
