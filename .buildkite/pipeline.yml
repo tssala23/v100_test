@@ -31,4 +31,4 @@ steps:
               persistentVolumeClaim:
                 claimName: shm-pvc
             nodeSelector:
-              kubernetes.io/hostname: "wrk-4"
+              kubernetes.io/hostname: "wrk-3"
