@@ -25,3 +25,8 @@ steps:
                   nvidia.com/gpu: 1
             nodeSelector:
               kubernetes.io/hostname: "wrk-3"
+            tolerations:
+            - key: "nvidia.com/gpu.product"
+              operator: "Equal"
+              value: "Tesla-V100-PCIE-32GB"
+              effect: "NoSchedule"
