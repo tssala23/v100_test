@@ -20,15 +20,8 @@ steps:
             - image: public.ecr.aws/q9t5s3a7/vllm-ci-postmerge-repo:c92acb9693c0504d7dabed2a0251b9f5d4ddaebb
               resources:
                 requests:
-                  nvidia.com/gpu: 4
+                  nvidia.com/gpu: 1
                 limits:
-                  nvidia.com/gpu: 4
-              volumeMounts:
-              - name: shm-volume
-                mountPath: /dev/shm
-            volumes:
-            - name: shm-volume
-              persistentVolumeClaim:
-                claimName: shm-pvc
+                  nvidia.com/gpu: 1
             nodeSelector:
               kubernetes.io/hostname: "wrk-3"
